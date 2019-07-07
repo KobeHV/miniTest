@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">test</string>
+    <string name="title_activity_register_check">RegisterCheck</string>
+    <string name="title_activity_login_success">LoginSuccess</string>
+</resources>
