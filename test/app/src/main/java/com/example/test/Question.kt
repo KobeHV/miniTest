@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.view.Gravity
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.Toast
 import com.hit.software.exam.Http
 import kotlinx.android.synthetic.main.activity_question.*
 import org.json.JSONObject
@@ -45,7 +47,7 @@ class Question : AppCompatActivity() {
                 str_JSON = it.obj.toString()
                 println(str_JSON)
                 parseJSON()
-                addQuestion(1)
+                addQuestion()
             }
             //登陆失败
             1 -> {
@@ -99,18 +101,18 @@ class Question : AppCompatActivity() {
                 two_visible()
             }
             if (index < questionList.size) {
-                addQuestion(1)
+                addQuestion()
             }
         }
         last.setOnClickListener() {
             index--
-//            zero_visible()
-//            if (index >= 0 && index < questionList.size) {
-            addQuestion(2)
-//            }
-//            if (index == 0) {
-//                one_visible()
-//            }
+            zero_visible()
+            if (index >= 0 && index < questionList.size) {
+                addQuestion()
+            }
+            if (index == 0) {
+                one_visible()
+            }
 
         }
         complete.setOnClickListener() {
@@ -119,15 +121,18 @@ class Question : AppCompatActivity() {
 
             Http.send("http://172.20.106.156:8080/exam/addScores",null,gradeJSON)
             var tip = "恭喜您！您做完了全部试题\n满分100分，您的得分为${grade.toInt()}分"
-            var intent = Intent(this, GetGrade::class.java)
-            intent.putExtra("grade", tip)
-            startActivity(intent)
+            var toast : Toast = Toast.makeText(this,tip,Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+//            var intent = Intent(this, GetGrade::class.java)
+//            intent.putExtra("grade", tip)
+//            startActivity(intent)
         }
 
     }
 
 
-    fun addQuestion(nextORlast: Int) {
+    fun addQuestion() {
         questionTitle.text = "${index + 1} : ${questionList[index].question_title}"
         optionA.text = questionList[index].option_a
         optionB.text = questionList[index].option_b
@@ -136,12 +141,11 @@ class Question : AppCompatActivity() {
         for (i in 0..3) {
             options[i].isChecked = false
         }
-        if (nextORlast == 2) {
-            var select = questionList[index].select_option
-            if (select != 0) {
-                options[questionList[index].select_option - 1].isChecked = true
-            }
+        var select = questionList[index].select_option
+        if (select != 0) {
+            options[questionList[index].select_option - 1].isChecked = true
         }
+
     }
 
     fun getGrade() {
@@ -214,192 +218,3 @@ class Question : AppCompatActivity() {
         }
     }
 }
-//var str = "{\n" +
-//                "    \"paper_title\": \"32次考试\",\n" +
-//                "    \"paper_discription\": \"这是一张试卷\",\n" +
-//                "    \"paper_duration\": \"600\",\n" +
-//                "    \"paper_start_time\": \"2019-6-9 16:43:17\",\n" +
-//                "    \"question_list\": [\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"下面四中以太网中,只能工作在全双工模式下的是\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"10BEASE-T以太网\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"100BEASE-T以太网\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"吉比特以太网\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"10Gbit以太网\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"D\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"关于链路状态协议的描述,错误的为:\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"仅相邻路由器需要交换各自路由表\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"全网路由器的拓扑数据库一致\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"采用洪泛技术更新链路变化信息\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"具有快速收敛的特点\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"A\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"若某通信链路的数据传输速率为2400b/s,采用4相位调制,则该链路的波特率为:\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"600波特\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"1200波特\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"4800波特\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"9600波特\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"B\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"计算机网络最基本的功能为\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"数据通信\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"资源共享\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"分布式处理\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"信息综合处理\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"A\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"利用模拟通信信道传输数字信号的方法称为\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"同步传输\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"异步传输\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"基带传输\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"频带传输\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"D\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"第一台计算机诞生于哪里?\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"斯坦福大学\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"宾夕法尼亚大学\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"麻省理工大学\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"哈佛大学\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"B\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"下面设备属于资源子网的是\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"计算机软件\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"网桥\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"交换机\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"路由器\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"A\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"计算机诞生于哪一年\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"1946\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"1947\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"1948\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"1949\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"A\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"波特率等于\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"每秒传输的比特\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"每秒可能发生的信号变化次数\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"每秒传输的周期数\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"每秒传输的字节数\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"B\"\n" +
-//                "        },\n" +
-//                "        {\n" +
-//                "            \"question_title\": \"1+1=\",\n" +
-//                "            \"option\": [\n" +
-//                "                {\n" +
-//                "                    \"A\": \"1\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"B\": \"3\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"C\": \"2\"\n" +
-//                "                },\n" +
-//                "                {\n" +
-//                "                    \"D\": \"4\"\n" +
-//                "                }\n" +
-//                "            ],\n" +
-//                "            \"correct_option\": \"C\"\n" +
-//                "        }\n" +
-//                "    ]\n" +
-//                "}\n" +
-//                "\n"

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.view.Gravity
+import android.widget.Toast
 import com.hit.software.exam.LoginCheck
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
@@ -47,8 +49,7 @@ class MainActivity : AppCompatActivity() {
         when (it.what) {
             //登陆成功
             0 -> {
-//                println("return-tip: ${it.obj.toString()}")
-                putTipText(it.obj.toString())
+//                putTipText(it.obj.toString())
                 var intent = Intent(this, LoginSuccess::class.java)
                 intent.putExtra("username",userName)
                 startActivity(intent) //跳转
@@ -56,20 +57,23 @@ class MainActivity : AppCompatActivity() {
             }
             //登陆失败
             1 -> {
-//                println("return-tip: ${it.obj.toString()}")
-                putTipText(it.obj.toString())
+                var toast : Toast = Toast.makeText(this,it.obj.toString(), Toast.LENGTH_SHORT)
+                toast.setGravity(Gravity.CENTER, 0, 0)
+                toast.show()
+//                putTipText(it.obj.toString())
             }
             //注册成功
             2 -> {
-//                println("return-tip: ${it.obj.toString()}")
-                putTipText(it.obj.toString())
+//                putTipText(it.obj.toString())
                 startActivity(Intent(this, RegisterSuccess::class.java)) //跳转
 //                this.finish()
             }
             //注册失败（用户名或者密码太短）
             3 -> {
-//                println("return-tip: ${it.obj.toString()}")
-                putTipText(it.obj.toString())
+                var toast : Toast = Toast.makeText(this,it.obj.toString(), Toast.LENGTH_SHORT)
+                toast.setGravity(Gravity.CENTER, 0, 0)
+                toast.show()
+//                putTipText(it.obj.toString())
             }
             //倒计时
             5 -> {
