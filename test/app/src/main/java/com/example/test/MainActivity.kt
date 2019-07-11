@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
+    var userName:String=""
     val mLoginCheck = object : LoginCheck.LoginResult {
         override fun getLoginResult(ret: Boolean, tipText: String) {
             if (!ret) {
@@ -48,7 +49,9 @@ class MainActivity : AppCompatActivity() {
             0 -> {
 //                println("return-tip: ${it.obj.toString()}")
                 putTipText(it.obj.toString())
-                startActivity(Intent(this, LoginSuccess::class.java)) //跳转
+                var intent = Intent(this, LoginSuccess::class.java)
+                intent.putExtra("username",userName)
+                startActivity(intent) //跳转
 //                this.finish()
             }
             //登陆失败
@@ -80,7 +83,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {//入口
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         addFunction()
     }
 
@@ -100,7 +102,7 @@ class MainActivity : AppCompatActivity() {
      * 判断登陆是否正确
      */
     private fun checkLogin() {
-        val userName = text_userid.text.toString()
+        userName = text_userid.text.toString()
         val userPassword = text_userpwd.text.toString()
 
         println("checkLogin: UserName:$userName UserPassword:$userPassword")
@@ -112,7 +114,7 @@ class MainActivity : AppCompatActivity() {
      * 判断注册是否正确
      */
     private fun checkRegister() {
-        val userName = text_userid.text.toString()
+        userName = text_userid.text.toString()
         val userPassword = text_userpwd.text.toString()
 
         if (userName.length < 3 || userPassword.length < 3) {

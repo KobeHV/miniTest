@@ -20,7 +20,7 @@ class LoginCheck(pLoginResult: LoginResult) :GeneralInterface{
                 }
             }
         }else{
-            println("Something Wrong")
+            println("Login Check --- Something Wrong")
         }
     }
     /**
@@ -30,8 +30,9 @@ class LoginCheck(pLoginResult: LoginResult) :GeneralInterface{
         val mJson = "{\"username\":\"$userName\",\"userpassword\":\"$userPassword\"}"
         //访问网络
 //        Http.send("http://172.20.9.250:8080/exam/login", this,mJson)//商用的话，用域名
-        Http.send("http://172.20.106.43:8080/exam/login", this,mJson)
+        Http.send("http://172.20.106.156:8080/exam/login", this,mJson)
     }
+
 
     /**
      * 回调，保存服务端返回的消息

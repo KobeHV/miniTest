@@ -7,6 +7,7 @@ import okhttp3.*
 import java.io.IOException
 import okhttp3.RequestBody
 import  okhttp3.MediaType.Companion.toMediaType
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -16,7 +17,12 @@ import  okhttp3.MediaType.Companion.toMediaType
 object Http {
     // OkHttpClient
     //定义OkHttp客户端，使用此客户端来发送请求
-    private val mOkHttpClient: OkHttpClient = OkHttpClient()
+    private val mOkHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .callTimeout(3,TimeUnit.MINUTES)
+        .connectTimeout(3,TimeUnit.MINUTES)
+        .readTimeout(3,TimeUnit.MINUTES)
+        .writeTimeout(3,TimeUnit.MINUTES)
+        .build()
 
 
     /**
@@ -38,9 +44,12 @@ object Http {
 
                 override fun onResponse(call: Call, response: Response) {
                     println("请求成功")
+                    //response 就是服务端返回的信息
                     mHttpCallBack?.response(true, response.body?.string())
                 }
             }
+
+
             mOkHttpClient.newCall(
                 Request.Builder()
                     .url(url)

@@ -28,7 +28,8 @@ class RegisterCheck(pRegisterResult: RegisterResult) :GeneralInterface {
     fun checkUserNameAndPassword(userName:String,userPassword:String = ""){
         val mJson = "{\"username\":\"$userName\",\"userpassword\":\"$userPassword\"}"
         //访问网络
-        Http.send("http://172.20.106.43:8080/exam/register", this,mJson)
+//        Http.send("http://172.20.9.250:8080/exam/register", this,mJson)
+        Http.send("http://172.20.106.156:8080/exam/register", this,mJson)
     }
 
     interface RegisterResult{

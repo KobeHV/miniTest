@@ -18,15 +18,32 @@ class MainController {
     @Autowired
     var mJdbcTemplate: JdbcTemplate? = null
 
-    @RequestMapping("/first")
-    @ResponseBody//应答内容
+    @RequestMapping("/")
+//    @ResponseBody//应答内容
     fun firstMethod(): String {
-//        println(str)
-        return "Hello 赵书光"
+        return "index"
     }
 
     /**
-     * 第三个方法
+     * 页面登陆地址
+     */
+    @RequestMapping("/loginget")
+    @ResponseBody
+    fun loginCheck(name:String,password:String):String{
+        return "$name $password : OK"
+    }
+
+    /**
+     * 登陆成功页面
+     */
+    @RequestMapping("/main")
+    fun mainPage():String{
+        return "main"
+    }
+
+    /**
+     * 登陆验证
+     * POST
      */
     @ResponseBody
     @PostMapping("/login")
@@ -37,9 +54,9 @@ class MainController {
          */
         var hasResult = false
         val sql = "select * from users where UserName = '${login.username}' and UserPassword = '${login.userpassword}'"
-//        println("sql:$sql")
+        println("sql:$sql")
         //object 这里是回调，返回时间不确定的情况下用回调
-        mJdbcTemplate?.query(sql, object : RowCallbackHandler {
+        var query = mJdbcTemplate?.query(sql, object : RowCallbackHandler {
             override fun processRow(rs: ResultSet) {
                 println("与服务端成功建立连接")
                 println("UserName"+rs.getString("UserName"))
@@ -53,7 +70,7 @@ class MainController {
          */
         return if (hasResult) {
             //登陆成功
-            "{\"code\":\"100\",\"result\":\"Login success\"}"
+            "{\"code\":\"100\",\"result\":\"Login success\",\"location\":\"main\"}"
         } else {
             //登陆失败
             "{\"code\":\"101\",\"result\":\"Login failure\"}"

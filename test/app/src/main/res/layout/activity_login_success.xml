@@ -9,7 +9,7 @@
         tools:context=".LoginSuccess" android:id="@+id/jpg_loginsuccess">
 
     <Button
-            android:text="获取试卷"
+            android:text="开始答题"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/button_getpaper"
             android:background="#A6CCF9" android:layout_marginTop="8dp"

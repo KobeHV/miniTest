@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content = "">
+    <title>
+        欢迎使用HIT测验管理系统
+    </title>
+</head>
+<body>
+ 用户名：<input type="text" id="name" onblur="check_user()"><br>
+ 密码：<input type="password" id="password"><br>
+ <input type="button" value="登陆"
+        onclick="login_click()"><br>
+<!-- <input type="text" id ="sss">-->
+
+ <script>
+     function check_user() {
+         alert("鼠标离开测试")
+     }
+     function login_click() {
+         var name = $("#name").val();
+         var passwd = $("#password").val();
+         //GET
+         // sendRequest("loginget","GET","name="+name+"&password="+passwd)
+         //POST
+         var mJSON = {"username":name,"userpassword":passwd};
+         // sendRequest("login","POST",mJSON,1);
+         sendRequest("login","POST",mJSON,2);
+     }
+
+     /**
+      * 发送请求
+      * 使用Ajax
+      */
+     function sendRequest(url,method,data,id) {
+         var mid = id;
+         if(method==="GET"){// three ===
+             $.ajax({
+                 type:method,
+                 url:url+"?"+data,
+                 data:data,
+                 dataType:"text",
+                 success:function (data) {
+                     alert(data.toString())
+                 },
+                 error:function (jqXHR) {
+                     alert(jqXHR.status)
+                 }
+             })
+         }
+         if(method==="POST"){
+             $.ajax({
+                 type:"POST",
+                 url:url,
+                 data:JSON.stringify(data),
+                 dataType:"json",
+                 contentType:"application/json;charset=utf-8",
+                 success:function (data) {
+                     // alert(data.code)
+                     processResult(data,mid)
+                 },
+                 error:function (jqXHR) {
+                     alert(jqXHR.status)
+                 }
+             })
+
+         }
+     }
+     function processResult(data,id) {
+         if(id===1){//判断登陆
+             if(data.code==="100"){
+                 window.location.href = data.location
+             }
+         }
+         if(id === 2){
+             //用户名检查是否存在
+             if(data.code === "100"){//用户名存在
+                 alert("用户名输入正确,正在核实密码···")
+                 window.location.href = data.location
+             }else{
+                 alert("无此用户,请重新输入···")
+             }
+         }
+     }
+
+ </script>
+
+<script th:src="@{/jquery-3.4.1.min.js}"></script>
+</body>
+</html>

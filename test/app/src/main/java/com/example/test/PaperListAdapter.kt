@@ -24,7 +24,7 @@ class PaperListAdapter(pData:ArrayList<PaperItem>,pContext: Context) : BaseAdapt
         if(p1 == null){
             cv = LayoutInflater.from(mContext).inflate(R.layout.list_item,p2,false)
             holder = ViewHolder()
-            holder?.mPaperTitle = cv?.findViewById(R.id.paper_list_item_title)
+            holder.mPaperTitle = cv?.findViewById(R.id.paper_list_item_title)
             cv.tag = holder
         }else{
             holder = cv!!.tag as ViewHolder
